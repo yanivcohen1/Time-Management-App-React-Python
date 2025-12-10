@@ -93,8 +93,8 @@ All scripts are run from the `client` directory using `pnpm <script-name>`.
 | `test:py` | Runs backend tests (Pytest). |
 | `lint:py` | Lints the backend code using Pylint. |
 | `seed` | Seeds the MongoDB database with initial data. |
-| `server` | Starts the backend server in development mode (with reload). |
-| `server:prod` | Starts the backend server in production mode. |
+| `serve` | Starts the backend server in development mode (with reload). |
+| `serve:prod` | Starts the backend server in production mode. |
 
 ## 📁 Project Structure
 
