@@ -30,7 +30,8 @@ const TrackStatus: React.FC = () => {
   const [total, setTotal] = useState(0);
   const [search, setSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState('');
-  const [dateFilter, setDateFilter] = useState<Date | null>(null);
+  const [startDate, setStartDate] = useState<Date | null>(null);
+  const [endDate, setEndDate] = useState<Date | null>(null);
   const [orderBy, setOrderBy] = useState<string>('created_at');
   const [order, setOrder] = useState<'asc' | 'desc'>('desc');
   const [editModalOpen, setEditModalOpen] = useState(false);
@@ -58,10 +59,11 @@ const TrackStatus: React.FC = () => {
       sort_by: orderBy,
       sort_desc: order === 'desc',
     };
-    if (dateFilter) {
-        // Simple exact date match logic or range logic can be implemented. 
-        // For now, let's assume we filter by start date >= selected date
-        params.due_date_start = dateFilter.toISOString();
+    if (startDate) {
+        params.due_date_start = startDate.toISOString();
+    }
+    if (endDate) {
+        params.due_date_end = endDate.toISOString();
     }
 
     try {
@@ -71,7 +73,7 @@ const TrackStatus: React.FC = () => {
     } catch (error) {
       console.error(error);
     }
-  }, [page, rowsPerPage, search, statusFilter, dateFilter, orderBy, order]);
+  }, [page, rowsPerPage, search, statusFilter, startDate, endDate, orderBy, order]);
 
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
@@ -121,14 +123,15 @@ const TrackStatus: React.FC = () => {
   return (
     <Box>
       <Typography variant="h4" gutterBottom>Track Status</Typography>
-      <Box sx={{ display: 'flex', gap: 2, mb: 2 }}>
+      <Box sx={{ display: 'flex', gap: 2, mb: 2, alignItems: 'center' }}>
         <TextField 
           label="Search by Name" 
           variant="outlined" 
           value={search}
           onChange={(e) => setSearch(e.target.value)}
+          size="small"
         />
-        <FormControl sx={{ minWidth: 120 }}>
+        <FormControl sx={{ minWidth: 120 }} size="small">
           <InputLabel>Status</InputLabel>
           <Select
             value={statusFilter}
@@ -144,11 +147,29 @@ const TrackStatus: React.FC = () => {
         </FormControl>
         <LocalizationProvider dateAdapter={AdapterDateFns}>
           <DatePicker
-            label="Filter by Date"
-            value={dateFilter}
-            onChange={(newValue) => setDateFilter(newValue)}
+            label="Start Date"
+            value={startDate}
+            onChange={(newValue) => setStartDate(newValue)}
+            slotProps={{ textField: { size: 'small' } }}
+          />
+          <DatePicker
+            label="End Date"
+            value={endDate}
+            onChange={(newValue) => setEndDate(newValue)}
+            slotProps={{ textField: { size: 'small' } }}
           />
         </LocalizationProvider>
+        {(startDate || endDate) && (
+          <Button 
+            variant="outlined" 
+            color="inherit" 
+            onClick={() => { setStartDate(null); setEndDate(null); }}
+            size="small"
+            sx={{ height: 40 }}
+          >
+            Clear Dates
+          </Button>
+        )}
       </Box>
       <TableContainer component={Paper}>
         <Table>
