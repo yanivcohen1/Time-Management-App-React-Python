@@ -8,6 +8,16 @@ A modern full-stack web application built with React (Vite) for the frontend and
 - **Backend**: Python, FastAPI, Motor (Async MongoDB), Beanie ODM
 - **Database**: MongoDB
 
+## ✨ Features
+
+- **User Authentication**: Secure login and registration system.
+- **Role-Based Access**: Support for different user roles (User, Admin).
+- **Todo Management**: Full CRUD operations for managing tasks.
+- **Task Duration**: Track the estimated or actual duration (in hours) for each task.
+- **Agile Board**: Interactive Kanban-style board with drag-and-drop functionality.
+- **Status Tracking**: Detailed table view for tracking task status and details.
+- **Dashboard**: Visual statistics on task status and workload distribution.
+
 ## 🚀 Getting Started
 
 ### Prerequisites
