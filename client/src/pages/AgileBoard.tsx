@@ -4,6 +4,7 @@ import { Box, Typography, Paper, Card, CardContent, IconButton, useTheme } from 
 import EditIcon from '@mui/icons-material/Edit';
 import { format } from 'date-fns';
 import api from '../api/axios';
+import CreateTodoModal from '../components/CreateTodoModal';
 
 interface Todo {
   _id: string;
@@ -21,6 +22,8 @@ const AgileBoard: React.FC = () => {
     IN_PROGRESS: [],
     COMPLETED: []
   });
+  const [editModalOpen, setEditModalOpen] = useState(false);
+  const [selectedTodo, setSelectedTodo] = useState<Todo | null>(null);
 
   const fetchTodos = useCallback(async () => {
     try {
@@ -54,6 +57,11 @@ const AgileBoard: React.FC = () => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
     fetchTodos();
   }, [fetchTodos]);
+
+  const handleEditClick = (todo: Todo) => {
+    setSelectedTodo(todo);
+    setEditModalOpen(true);
+  };
 
   const onDragEnd = async (result: DropResult) => {
     if (!result.destination) return;
@@ -177,7 +185,7 @@ const AgileBoard: React.FC = () => {
                                   <Typography variant="subtitle1" sx={{ fontWeight: 'bold', lineHeight: 1.2 }}>
                                     {task.title}
                                   </Typography>
-                                  <IconButton size="small" sx={{ p: 0.5, mt: -0.5, mr: -0.5 }}>
+                                  <IconButton size="small" sx={{ p: 0.5, mt: -0.5, mr: -0.5 }} onClick={() => handleEditClick(task)}>
                                     <EditIcon fontSize="small" />
                                   </IconButton>
                                 </Box>
@@ -207,6 +215,15 @@ const AgileBoard: React.FC = () => {
           ))}
         </Box>
       </DragDropContext>
+      <CreateTodoModal
+        open={editModalOpen}
+        onClose={() => {
+          setEditModalOpen(false);
+          setSelectedTodo(null);
+        }}
+        onSave={fetchTodos}
+        todo={selectedTodo}
+      />
     </Box>
   );
 };
