@@ -222,7 +222,7 @@ const AgileBoard: React.FC = () => {
 
                                 {task.duration && (
                                   <Typography variant="caption" sx={{ color: 'text.secondary', display: 'block' }}>
-                                    Duration: {task.duration}
+                                    Duration (hours): {task.duration}
                                   </Typography>
                                 )}
 
