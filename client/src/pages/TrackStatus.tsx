@@ -202,7 +202,7 @@ const TrackStatus: React.FC = () => {
                   Due Date
                 </TableSortLabel>
               </TableCell>
-              <TableCell>Duration (hours)</TableCell>
+              <TableCell>Duration</TableCell>
               <TableCell>Actions</TableCell>
             </TableRow>
           </TableHead>

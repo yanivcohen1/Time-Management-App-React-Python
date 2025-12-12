@@ -127,7 +127,7 @@ const CreateTodoModal: React.FC<CreateTodoModalProps> = ({ open, onClose, onTodo
         />
         <TextField
           margin="dense"
-          label="Duration (hours)"
+          label="Duration"
           name="duration"
           fullWidth
           variant="outlined"
