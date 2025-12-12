@@ -21,7 +21,7 @@ namespace AuthApi.Tests
             var client = _factory.CreateClient();
 
             // Act
-            var response = await client.GetAsync("/api/health");
+            var response = await client.GetAsync("/health");
 
             // Assert
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
