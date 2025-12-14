@@ -1,12 +1,13 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordRequestForm
+from pydantic import BaseModel
 from app.auth import verify_password, create_access_token, get_current_user
 from app.models import User
-from pydantic import BaseModel
 
 router = APIRouter(prefix="/auth", tags=["auth"])
 
 class Token(BaseModel):
+    """Token response model."""
     access_token: str
     token_type: str
     role: str
@@ -22,7 +23,12 @@ async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(
             headers={"WWW-Authenticate": "Bearer"},
         )
     access_token = create_access_token(data={"sub": user.email, "role": user.role})
-    return {"access_token": access_token, "token_type": "bearer", "role": user.role, "name": user.full_name}
+    return {
+        "access_token": access_token,
+        "token_type": "bearer",
+        "role": user.role,
+        "name": user.full_name
+    }
 
 @router.get("/me", response_model=User)
 async def read_users_me(current_user: User = Depends(get_current_user)):

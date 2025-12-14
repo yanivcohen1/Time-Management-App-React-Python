@@ -4,11 +4,9 @@ Integration tests for the API endpoints.
 """
 import pytest
 from httpx import AsyncClient, ASGITransport
-from beanie import init_beanie
-from motor.motor_asyncio import AsyncIOMotorClient
 
 from app.main import app
-from app.models import User, Todo, Role
+from app.models import User, Role
 from app.auth import create_access_token, get_password_hash
 
 @pytest.fixture

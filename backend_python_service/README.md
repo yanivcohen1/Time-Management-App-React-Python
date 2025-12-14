@@ -7,6 +7,7 @@ This is the secondary backend service, built with FastAPI and Python.
 *   **Framework**: FastAPI
 *   **Database**: MongoDB (via Motor & Beanie ODM)
 *   **Testing**: Pytest
+*   **Linting**: Mypy
 *   **Package Manager**: pip
 
 ## 🛠 Setup & Installation
@@ -51,6 +52,14 @@ Runs the test suite using Pytest.
 
 `ash
 pytest
+`
+
+## 🧹 Linting
+
+Runs static type checking using Mypy.
+
+`ash
+mypy app
 `
 
 ## ⚙️ Configuration

@@ -2,13 +2,15 @@ import asyncio
 import os
 # Monkeypatch asyncio.coroutine for Motor 2.5.1 compatibility with Python 3.14
 if not hasattr(asyncio, 'coroutine'):
-    asyncio.coroutine = lambda x: x
+    asyncio.coroutine = lambda x: x  # type: ignore
 
+# pylint: disable=wrong-import-position
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.config import settings
 from app.database import init_db
 from app.routes import auth, todos
+# pylint: enable=wrong-import-position
 
 app = FastAPI()
 

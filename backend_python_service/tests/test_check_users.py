@@ -21,7 +21,6 @@ async def test_check_users(test_db):
     print(f"Found {len(users)} users:")
     for u in users:
         print(f" - {u.email} (Role: {u.role})")
-    
+
     assert len(users) == 1
     assert users[0].email == "check@example.com"
-
