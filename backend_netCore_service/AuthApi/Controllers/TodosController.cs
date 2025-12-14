@@ -29,6 +29,13 @@ public class TodosController : ControllerBase
         return user.Id;
     }
 
+    private DateTime? NormalizeDueDate(DateTime? date)
+    {
+        if (!date.HasValue) return null;
+        // Set to Noon UTC to avoid timezone shifts (day-1 issue)
+        return DateTime.SpecifyKind(date.Value.Date, DateTimeKind.Utc).AddHours(12);
+    }
+
     [HttpGet]
     public async Task<IActionResult> GetTodos(
         [FromQuery] int page = 1,
@@ -49,6 +56,7 @@ public class TodosController : ControllerBase
             "created_at" => "CreatedAt",
             "due_date" => "DueDate",
             "title" => "Title",
+            "status" => "Status",
             _ => "CreatedAt"
         };
 
@@ -64,7 +72,7 @@ public class TodosController : ControllerBase
             Title = todoIn.Title,
             Description = todoIn.Description,
             Status = todoIn.Status,
-            DueDate = todoIn.DueDate,
+            DueDate = NormalizeDueDate(todoIn.DueDate),
             Duration = todoIn.Duration,
             UserId = GetCurrentUserId()
         };
@@ -90,6 +98,11 @@ public class TodosController : ControllerBase
     [HttpPut("{id}")]
     public async Task<IActionResult> UpdateTodo(string id, [FromBody] TodoUpdate todoIn)
     {
+        if (todoIn.DueDate.HasValue)
+        {
+            todoIn.DueDate = NormalizeDueDate(todoIn.DueDate);
+        }
+        
         var updatedTodo = await _todoService.UpdateTodoAsync(id, GetCurrentUserId(), todoIn);
         if (updatedTodo == null) return NotFound(new { detail = "Todo not found" });
         return Ok(updatedTodo);
