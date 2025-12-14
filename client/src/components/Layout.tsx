@@ -73,9 +73,9 @@ const Layout: React.FC = () => {
                   backgroundColor: (theme) => theme.palette.mode === 'light' ? 'rgba(0,0,0,0.08)' : undefined,
                 },
                 '&.Mui-selected': {
-                  backgroundColor: (theme) => theme.palette.mode === 'light' ? 'rgba(25, 118, 210, 0.15)' : 'rgba(144, 202, 249, 0.16)',
+                  backgroundColor: (theme) => theme.palette.mode === 'light' ? 'rgba(25, 118, 210, 0.25)' : 'rgba(144, 202, 249, 0.16)',
                   '&:hover': {
-                    backgroundColor: (theme) => theme.palette.mode === 'light' ? 'rgba(25, 118, 210, 0.25)' : 'rgba(144, 202, 249, 0.24)',
+                    backgroundColor: (theme) => theme.palette.mode === 'light' ? 'rgba(25, 118, 210, 0.35)' : 'rgba(144, 202, 249, 0.24)',
                   }
                 }
               }}
