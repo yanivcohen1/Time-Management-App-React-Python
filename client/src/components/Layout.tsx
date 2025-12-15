@@ -10,6 +10,7 @@ import {
 import { Outlet, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useColorMode } from '../context/ColorModeContext';
+import { useAdmin } from '../context/AdminContext';
 import LoadingBar from 'react-top-loading-bar';
 import { useSnackbar } from 'notistack';
 import { setupInterceptors } from '../api/axios';
@@ -25,6 +26,7 @@ const Layout: React.FC = () => {
   const [createModalOpen, setCreateModalOpen] = useState(false);
   const [adminOpen, setAdminOpen] = useState(false);
   const { logout, user } = useAuth();
+  const { selectedUserName } = useAdmin();
   const navigate = useNavigate();
   const location = useLocation();
   const [progress, setProgress] = useState(0);
@@ -95,32 +97,36 @@ const Layout: React.FC = () => {
             </ListItemButton>
           </ListItem>
         ))}
-        <ListItem disablePadding>
-          <ListItemButton onClick={() => setAdminOpen(!adminOpen)}>
-            <ListItemIcon>
-              <AdminPanelSettings />
-            </ListItemIcon>
-            <ListItemText primary="Admin" />
-            {adminOpen ? <ExpandLess /> : <ExpandMore />}
-          </ListItemButton>
-        </ListItem>
-        <Collapse in={adminOpen} timeout="auto" unmountOnExit>
-          <List component="div" disablePadding>
-            <ListItemButton 
-              sx={{ pl: 4 }}
-              selected={location.pathname.startsWith('/admin')}
-              onClick={() => {
-                navigate('/admin/1');
-                if (isMobile) setMobileOpen(false);
-              }}
-            >
-              <ListItemIcon>
-                <Terminal />
-              </ListItemIcon>
-              <ListItemText primary="Console" />
-            </ListItemButton>
-          </List>
-        </Collapse>
+        {user?.role?.toLowerCase() === 'admin' && (
+          <>
+            <ListItem disablePadding>
+              <ListItemButton onClick={() => setAdminOpen(!adminOpen)}>
+                <ListItemIcon>
+                  <AdminPanelSettings />
+                </ListItemIcon>
+                <ListItemText primary="Admin" />
+                {adminOpen ? <ExpandLess /> : <ExpandMore />}
+              </ListItemButton>
+            </ListItem>
+            <Collapse in={adminOpen} timeout="auto" unmountOnExit>
+              <List component="div" disablePadding>
+                <ListItemButton 
+                  sx={{ pl: 4 }}
+                  selected={location.pathname.startsWith('/admin')}
+                  onClick={() => {
+                    navigate('/admin/1/console/1');
+                    if (isMobile) setMobileOpen(false);
+                  }}
+                >
+                  <ListItemIcon>
+                    <Terminal />
+                  </ListItemIcon>
+                  <ListItemText primary="Console" />
+                </ListItemButton>
+              </List>
+            </Collapse>
+          </>
+        )}
       </List>
     </div>
   );
@@ -145,7 +151,7 @@ const Layout: React.FC = () => {
               Agile Tasks
             </Typography>
           </Box>
-
+ {selectedUserName && ` - ${selectedUserName}`}
           <Divider orientation="vertical" flexItem sx={{ mr: 2, my: 2, borderColor: 'rgba(255, 255, 255, 0.3)' }} />
           
           <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1 }}>

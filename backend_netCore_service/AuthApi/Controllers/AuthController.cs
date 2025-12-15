@@ -56,6 +56,26 @@ public class AuthController : ControllerBase
         var user = _userService.GetUser(username);
         if (user == null) return NotFound();
 
-        return Ok(user);
+        return Ok(new
+        {
+            _id = user.Id,
+            email = user.Username,
+            full_name = user.FullName,
+            role = user.Role
+        });
+    }
+
+    [HttpGet("users")]
+    [Authorize(Roles = "Admin")]
+    public IActionResult GetUsers()
+    {
+        var users = _userService.GetAllUsers();
+        return Ok(users.Select(u => new
+        {
+            _id = u.Id,
+            email = u.Username,
+            full_name = u.FullName,
+            role = u.Role
+        }));
     }
 }

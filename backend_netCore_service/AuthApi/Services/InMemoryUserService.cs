@@ -32,6 +32,8 @@ public class InMemoryUserService : IUserService
     public ApplicationUser? GetUser(string username) =>
         _users.SingleOrDefault(u => u.Username.Equals(username, StringComparison.OrdinalIgnoreCase));
 
+    public IEnumerable<ApplicationUser> GetAllUsers() => _users;
+
     private ApplicationUser CreateUser(string username, string password, string role)
     {
         var user = new ApplicationUser

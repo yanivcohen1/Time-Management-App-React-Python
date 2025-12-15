@@ -45,7 +45,8 @@ public class TodosController : ControllerBase
         [FromQuery] Status? status = null,
         [FromQuery] string? search = null,
         [FromQuery(Name = "due_date_start")] DateTime? dueDateStart = null,
-        [FromQuery(Name = "due_date_end")] DateTime? dueDateEnd = null)
+        [FromQuery(Name = "due_date_end")] DateTime? dueDateEnd = null,
+        [FromQuery(Name = "user_id")] string? userId = null)
     {
         // Map snake_case sort_by to PascalCase property names if needed
         // But Mongo driver might handle it if we map it correctly or use BsonElement
@@ -70,7 +71,21 @@ public class TodosController : ControllerBase
             dueDateEnd = dueDateEnd.Value.Date.AddDays(1).AddTicks(-1);
         }
 
-        var result = await _todoService.GetTodosAsync(GetCurrentUserId(), page, size, sortProperty, sortDesc, status, search, dueDateStart, dueDateEnd);
+        string targetUserId = GetCurrentUserId();
+        if (!string.IsNullOrEmpty(userId))
+        {
+            var username = User.Identity?.Name;
+            if (username != null)
+            {
+                var currentUser = _userService.GetUser(username);
+                if (currentUser?.Role == "Admin")
+                {
+                    targetUserId = userId;
+                }
+            }
+        }
+
+        var result = await _todoService.GetTodosAsync(targetUserId, page, size, sortProperty, sortDesc, status, search, dueDateStart, dueDateEnd);
         return Ok(result);
     }
 

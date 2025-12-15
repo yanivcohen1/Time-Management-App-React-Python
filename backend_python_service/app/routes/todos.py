@@ -35,9 +35,13 @@ async def get_todos(
     search: Optional[str] = None,
     due_date_start: Optional[datetime] = None,
     due_date_end: Optional[datetime] = None,
+    user_id: Optional[str] = None,
     current_user: User = Depends(get_current_user)
 ):
-    query = Todo.find(Todo.user.id == current_user.id)  # type: ignore
+    if user_id and current_user.role == "admin":
+        query = Todo.find(Todo.user.id == PydanticObjectId(user_id))  # type: ignore
+    else:
+        query = Todo.find(Todo.user.id == current_user.id)  # type: ignore
 
     if status:
         query = query.find(Todo.status == status)

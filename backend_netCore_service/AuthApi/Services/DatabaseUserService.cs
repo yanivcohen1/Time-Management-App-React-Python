@@ -27,4 +27,6 @@ public class DatabaseUserService : IUserService
 
     public ApplicationUser? GetUser(string username) =>
         _context.Users.SingleOrDefault(u => u.Username.Equals(username, StringComparison.OrdinalIgnoreCase));
+
+    public IEnumerable<ApplicationUser> GetAllUsers() => _context.Users.ToList();
 }

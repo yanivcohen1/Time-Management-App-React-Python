@@ -70,4 +70,6 @@ public class MongoUserService : IUserService
 
     public ApplicationUser? GetUser(string username) =>
         _users.Find(u => u.Username.ToLower() == username.ToLower()).FirstOrDefault();
+
+    public IEnumerable<ApplicationUser> GetAllUsers() => _users.Find(_ => true).ToList();
 }
