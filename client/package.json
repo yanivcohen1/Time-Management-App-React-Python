@@ -18,6 +18,7 @@
     "seed:py": "cd ../backend_python_service && .venv\\Scripts\\python seed.py",
     "serve:py": "cd ../backend_python_service && .venv\\Scripts\\python -m uvicorn app.main:app --reload --port 5000",
     "serve:py:prod": "cd ../backend_python_service && cross-env ENV=prod .venv\\Scripts\\python -m uvicorn app.main:app --port 5000",
+    "activate:py": "cd ../backend_python_service && .venv\\Scripts\\activate",
     "seed:cs": "cd ../backend_netCore_service/AuthApi && dotnet run -- --seed",
     "test:cs": "cd ../backend_netCore_service/AuthApi && dotnet test",
     "lint:cs": "cd ../backend_netCore_service/AuthApi && dotnet format",
